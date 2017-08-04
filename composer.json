@@ -1,0 +1,18 @@
+{
+    "name": "netsells/csvme",
+    "description": "An opinionated library to make exporting data in CSV format super simple.",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Sam Jordan",
+            "email": "sam@netsells.co.uk"
+        }
+    ],
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "Netsells\\Csvme\\": "src"
+        }
+    }
+}
