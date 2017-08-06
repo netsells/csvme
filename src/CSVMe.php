@@ -6,7 +6,7 @@ use Closure;
 use League\Csv\Writer;
 use SplTempFileObject;
 
-class CSVMe
+class Csvme
 {
     /**
      * @var Writer
@@ -20,24 +20,21 @@ class CSVMe
 
     protected $items = [];
     protected $headers = [];
+    protected $name;
 
     /**
      * CSVMe constructor.
-     *
-     * @param Closure $layout
      */
-    public function __construct(Closure $layout)
+    public function __construct()
     {
         $this->csv = Writer::createFromFileObject(new SplTempFileObject());
-
-        $this->layout = $layout;
     }
 
     /**
      * @param array $headers
      * @return $this
      */
-    public function withHeaders(array $headers)
+    public function withHeader(array $headers)
     {
         $this->headers = $headers;
 
@@ -56,24 +53,40 @@ class CSVMe
     }
 
     /**
+     * @param Closure $layout
+     * @return $this
+     */
+    public function withLayout(Closure $layout)
+    {
+        $this->layout = $layout;
+
+        return $this;
+    }
+
+    /**
      * Output the CSV to the browser
      *
-     * @param string $name
+     * @param CsvComposer|null $composer
      */
-    public function output($name = null)
+    public function output(CsvComposer $composer = null)
     {
-        if (is_null($name)) {
-            $name = $this->discoverName();
+        if ($composer) {
+            $composer->compose($this);
         }
 
         // Process the provided headers and items before outputting
         $this->process();
 
         // Output the CSV, this method will also set the appropriate content-type headers
-        $this->getCsv()->output($name . '-' . date('Y-m-d_H:i:s') . '.csv');
+        $this->getCsv()->output($this->fileName());
 
         // To be extra safe, we'll exit.
         exit();
+    }
+
+    public function setName($name)
+    {
+        $this->name = $name;
     }
 
     /**
@@ -93,6 +106,18 @@ class CSVMe
         $this->csv = $csv;
 
         return $this;
+    }
+
+    /**
+     * @return string
+     */
+    private function fileName()
+    {
+        if (is_null($this->name)) {
+            $this->name = $this->discoverName();
+        }
+
+        return $this->name . '-' . date('Y-m-d_H:i:s') . '.csv';
     }
 
     /**
@@ -133,8 +158,9 @@ class CSVMe
         $layoutClosure = $this->layout;
 
         // For each item, we'll pass into the layout closure for formatting
-        foreach($this->items as $item) {
+        foreach ($this->items as $item) {
             $this->getCsv()->insertOne($layoutClosure($item));
         }
     }
+
 }

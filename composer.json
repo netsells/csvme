@@ -7,9 +7,15 @@
         {
             "name": "Sam Jordan",
             "email": "sam@netsells.co.uk"
+        },
+        {
+            "name": "Craig Sansam",
+            "email": "craig.sansam@netsells.co.uk"
         }
     ],
-    "require": {},
+    "require": {
+        "league/csv": "^8.2"
+    },
     "autoload": {
         "psr-4": {
             "Netsells\\Csvme\\": "src"
