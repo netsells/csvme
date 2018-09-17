@@ -90,7 +90,7 @@ class Csvme
     }
 
     /**
-     * @return mixed
+     * @return Writer
      */
     public function getCsv()
     {
@@ -147,7 +147,7 @@ class Csvme
     /**
      * Add the headers and items to the CSV writer object
      */
-    private function process()
+    public function process()
     {
         if (count($this->headers)) {
             $this->getCsv()->insertOne($this->headers);
@@ -162,5 +162,4 @@ class Csvme
             $this->getCsv()->insertOne($layoutClosure($item));
         }
     }
-
 }
