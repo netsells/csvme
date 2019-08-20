@@ -68,15 +68,10 @@ class Csvme
      *
      * @param CsvComposer|null $composer
      */
-    public function output(CsvComposer $composer = null, bool $addCorsHeader = null)
+    public function output(CsvComposer $composer = null)
     {
         if ($composer) {
             $composer->compose($this);
-        }
-
-        // Cors header is required when requesting export from a different server
-        if($addCorsHeader) {
-            header('Access-Control-Allow-Origin: *');
         }
 
         // Process the provided headers and items before outputting
@@ -166,5 +161,16 @@ class Csvme
         foreach ($this->items as $item) {
             $this->getCsv()->insertOne($layoutClosure($item));
         }
+    }
+
+    /**
+     * @return $this
+     * Sets the cors header to allow csv to be downloaded from a separate server
+     */
+    public function setCorsHeader()
+    {
+        header('Access-Control-Allow-Origin: *');
+
+        return $this;
     }
 }
