@@ -93,3 +93,23 @@ class OrderExportComposer implements CsvComposer
 
 }
 ```
+### CORS Headers
+When using Csvme in api endpoints, you can add the `Access-Control-Allow-Origin` header using the `setCorsHeader()` method. 
+The method defaults to allow all origins but a specific origin can be passed in as an argument in the following way.
+
+```php
+$csv = new Csvme();
+
+$csv->withHeader(['ID', 'Total', 'Number of Items', 'Created At'])
+    ->withLayout(function(Order $order) {
+        return [
+            $order->id,
+            $order->total,
+            $order->items->count(),
+            $order->created_at->format('d-m-Y'),
+        ];
+    })
+    ->withItems($orders)
+    ->setCorsHeader('https://test.com')
+    ->output();
+``` 
