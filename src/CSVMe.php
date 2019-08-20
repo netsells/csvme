@@ -167,9 +167,9 @@ class Csvme
      * @return $this
      * Sets the cors header to allow csv to be downloaded from a separate server
      */
-    public function setCorsHeader()
+    public function setCorsHeader($origins = '*')
     {
-        header('Access-Control-Allow-Origin: *');
+        header("Access-Control-Allow-Origin: {$origins}");
 
         return $this;
     }
