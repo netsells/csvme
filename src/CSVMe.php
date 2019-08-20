@@ -68,10 +68,15 @@ class Csvme
      *
      * @param CsvComposer|null $composer
      */
-    public function output(CsvComposer $composer = null)
+    public function output(CsvComposer $composer = null, bool $addCorsHeader = null)
     {
         if ($composer) {
             $composer->compose($this);
+        }
+
+        // Cors header is required when requesting export from a different server
+        if($addCorsHeader) {
+            header('Access-Control-Allow-Origin: *');
         }
 
         // Process the provided headers and items before outputting
