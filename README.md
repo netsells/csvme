@@ -6,6 +6,8 @@
 
 Csvme is an opinionated library that utilises the `league/csv` library.
 
+It is created and maintained by the [Netsells team](https://netsells.co.uk/)
+
 ## Install
 
 Install `Csvme` using Composer.
